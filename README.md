@@ -1,4 +1,4 @@
-# 📦 StockFlow – Inventory & Order Management System
+# StockFlow – Inventory & Order Management System
 
 <p align="center">
   <b>Full Stack Inventory & Order Management Platform</b><br/>
@@ -7,7 +7,7 @@
 
 ---
 
-## 🚀 Live Demo
+## Live Demo
 
 ### Frontend
 
@@ -23,7 +23,7 @@
 
 ---
 
-## 📖 Overview
+## Overview
 
 StockFlow is a modern inventory and order management system designed for businesses to manage products, customers, orders, and inventory transactions efficiently.
 
@@ -31,7 +31,7 @@ The platform ensures inventory consistency using transactional database operatio
 
 ---
 
-## ✨ Features
+## Features
 
 ### Product Management
 
@@ -70,7 +70,7 @@ The platform ensures inventory consistency using transactional database operatio
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Backend
 
@@ -98,7 +98,7 @@ The platform ensures inventory consistency using transactional database operatio
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 inventory-order-management/
@@ -128,7 +128,7 @@ inventory-order-management/
 
 ---
 
-## 🏗 System Architecture
+##  System Architecture
 
 ```text
 Customers
@@ -148,7 +148,7 @@ Inventory Transactions
 
 ---
 
-## ⚡ Local Setup
+##  Local Setup
 
 ### Clone Repository
 
@@ -178,7 +178,7 @@ docker compose exec backend python -m scripts.seed
 
 ---
 
-## 🌐 Local URLs
+##  Local URLs
 
 | Service      | URL                          |
 | ------------ | ---------------------------- |
@@ -189,7 +189,7 @@ docker compose exec backend python -m scripts.seed
 
 ---
 
-## 🧪 Run Tests
+## Run Tests
 
 ```bash
 docker compose run --rm backend pytest
@@ -197,7 +197,7 @@ docker compose run --rm backend pytest
 
 ---
 
-## 🔒 Inventory Consistency
+## Inventory Consistency
 
 Order placement is handled inside a single PostgreSQL transaction.
 
@@ -217,7 +217,7 @@ This prevents:
 
 ---
 
-## 📸 Application Screenshots
+##  Application Screenshots
 
 ### Dashboard
 
@@ -243,7 +243,7 @@ docker pull 63982355/inventory-order-api
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 ### Frontend
 
@@ -259,7 +259,7 @@ Hosted on Neon PostgreSQL
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 ### Abhay Rastogi
 
