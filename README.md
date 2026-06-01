@@ -1,201 +1,268 @@
-# StockFlow Inventory & Order Management System
+# 📦 StockFlow – Inventory & Order Management System
 
-A professional full-stack assessment project for managing products, customers, orders, and inventory movements. The backend enforces stock correctness inside PostgreSQL transactions; the React frontend provides a responsive operations dashboard.
+<p align="center">
+  <b>Full Stack Inventory & Order Management Platform</b><br/>
+  Built with FastAPI, React, PostgreSQL, Docker & Modern DevOps Practices
+</p>
 
-## Features
+---
 
-- Product CRUD with unique normalized SKUs and controlled stock adjustments
-- Customer CRUD with unique normalized email addresses
-- Multi-item order placement with backend-calculated totals
-- Atomic inventory validation and stock reduction using row locks
-- Automatic stock restoration when an active order is cancelled
-- Inventory audit log for order and manual stock movements
-- FastAPI OpenAPI documentation, Alembic migrations, Docker Compose, tests, and CI
+## 🚀 Live Demo
 
-## Architecture
+### Frontend
 
+🔗 https://inventory-order-management-zeta.vercel.app/
+
+### API Documentation
+
+🔗 https://inventory-order-management-fvs6.onrender.com/docs
+
+### Docker Image
+
+🔗 https://hub.docker.com/r/63982355/inventory-order-api
+
+---
+
+## 📖 Overview
+
+StockFlow is a modern inventory and order management system designed for businesses to manage products, customers, orders, and inventory transactions efficiently.
+
+The platform ensures inventory consistency using transactional database operations and provides a clean operational dashboard for tracking stock movement and order activity.
+
+---
+
+## ✨ Features
+
+### Product Management
+
+* Create, update and delete products
+* SKU-based inventory tracking
+* Real-time stock management
+* Low-stock monitoring
+
+### Customer Management
+
+* Customer CRUD operations
+* Unique email validation
+* Customer order history support
+
+### Order Processing
+
+* Multi-item order creation
+* Automatic order total calculation
+* Order status management
+* Order cancellation support
+
+### Inventory Tracking
+
+* Inventory audit logs
+* Automatic stock deduction
+* Stock restoration on cancellation
+* Inventory movement history
+
+### Developer Features
+
+* FastAPI Swagger Documentation
+* Alembic Migrations
+* Dockerized Development Setup
+* Automated Testing
+* CI/CD Ready Architecture
+
+---
+
+## 🛠 Tech Stack
+
+### Backend
+
+* FastAPI
+* SQLAlchemy
+* PostgreSQL
+* Alembic
+* Pydantic
+* Pytest
+
+### Frontend
+
+* React
+* TypeScript
+* Vite
+
+### DevOps & Deployment
+
+* Docker
+* Docker Compose
+* GitHub Actions
+* Neon PostgreSQL
+* Render
+* Vercel
+
+---
+
+## 📂 Project Structure
+
+```text
 inventory-order-management/
+│
 ├── backend/
-│   ├── alembic/               # Database migrations
+│   ├── alembic/
 │   ├── app/
-│   │   ├── api/v1/routes/     # HTTP controllers
-│   │   ├── core/              # Environment configuration
-│   │   ├── db/                # SQLAlchemy session and metadata
-│   │   ├── models/            # Database entities
-│   │   ├── schemas/           # Pydantic API contracts
-│   │   └── services/          # Transactional business rules
-│   ├── scripts/seed.py        # Demo records
-│   └── tests/                 # API tests
+│   │   ├── api/
+│   │   ├── models/
+│   │   ├── schemas/
+│   │   ├── services/
+│   │   └── core/
+│   ├── tests/
+│   └── scripts/
+│
 ├── frontend/
 │   └── src/
-│       ├── api/               # Fetch client
-│       ├── components/        # Shared UI components
-│       ├── pages/             # Dashboard and management pages
-│       └── types/             # TypeScript contracts
-├── .github/workflows/         # CI and GHCR image publishing
+│       ├── components/
+│       ├── pages/
+│       ├── api/
+│       └── types/
+│
 ├── docker-compose.yml
 ├── render.yaml
 └── .env.example
+```
 
+---
 
+## 🏗 System Architecture
 
-erDiagram
-  CUSTOMERS ||--o{ ORDERS : places
-  ORDERS ||--|{ ORDER_ITEMS : contains
-  PRODUCTS ||--o{ ORDER_ITEMS : referenced_by
-  PRODUCTS ||--o{ INVENTORY_TRANSACTIONS : tracks
+```text
+Customers
+    │
+    ▼
+ Orders
+    │
+    ▼
+Order Items
+    │
+    ▼
+ Products
+    │
+    ▼
+Inventory Transactions
+```
 
+---
 
-## Step 1: Open the Project in VS Code
+## ⚡ Local Setup
 
-From PowerShell:
+### Clone Repository
 
-```powershell
+```bash
+git clone https://github.com/AbhayRastogi11/inventory-order-management.git
+
 cd inventory-order-management
-code .
 ```
 
-Install Docker Desktop and confirm that Docker is running:
+### Configure Environment Variables
 
-```powershell
-docker --version
-docker compose version
+```bash
+cp .env.example .env
 ```
 
-## Step 2: Configure Environment Variables
+### Start Application
 
-Copy the example environment file:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-For local development, the provided defaults work with Docker Compose. Do not commit `.env`.
-
-## Step 3: Start the Complete Application
-
-Run Docker Compose commands from the repository root, where `docker-compose.yml` is located:
-
-```powershell
-cd C:\path\to\inventory-order-management
-```
-
-```powershell
+```bash
 docker compose up --build
 ```
 
-Open:
+### Seed Demo Data
 
-- Frontend: `http://localhost:5173`
-- Backend health check: `http://localhost:8000/health`
-- Interactive API documentation: `http://localhost:8000/docs`
-
-In another terminal, load demo products and customers:
-
-```powershell
+```bash
 docker compose exec backend python -m scripts.seed
 ```
 
-## Step 4: Run Automated Tests
+---
 
-```powershell
+## 🌐 Local URLs
+
+| Service      | URL                          |
+| ------------ | ---------------------------- |
+| Frontend     | http://localhost:5173        |
+| Backend      | http://localhost:8000        |
+| API Docs     | http://localhost:8000/docs   |
+| Health Check | http://localhost:8000/health |
+
+---
+
+## 🧪 Run Tests
+
+```bash
 docker compose run --rm backend pytest
 ```
 
-The tests cover:
+---
 
-- Duplicate SKU rejection
-- Case-insensitive duplicate email rejection
-- Negative-stock adjustment rejection
-- Successful order placement and stock reduction
-- Insufficient-stock order rejection
-- Stock restoration on cancellation
+## 🔒 Inventory Consistency
 
-## Business Rule: Atomic Order Placement
+Order placement is handled inside a single PostgreSQL transaction.
 
-`backend/app/services/order_service.py` performs order creation in one database transaction:
+The backend uses:
 
-1. Validate the customer.
-2. Lock every requested product row with `SELECT ... FOR UPDATE`.
-3. Validate that every product exists and has sufficient stock.
-4. Store the current product price on each order item.
-5. Reduce product stock and append inventory audit records.
-6. Commit only when the complete order is valid.
+* Row-level locking (`SELECT FOR UPDATE`)
+* Atomic stock updates
+* Transaction rollback on failure
+* Inventory audit logging
 
-If any item lacks stock, the API returns HTTP `409` and no stock is reduced.
+This prevents:
 
-## Step 5: Push to GitHub
+* Overselling
+* Race conditions
+* Inventory corruption
+* Concurrent stock conflicts
 
-Create an empty GitHub repository, then run:
+---
 
-```powershell
-git init
-git add .
-git commit -m "Build inventory and order management system"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/inventory-order-management.git
-git push -u origin main
+## 📸 Application Screenshots
+
+### Dashboard
+
+![Dashboard](./docs/images/dashboard.png)
+
+### Products
+
+![Products](./docs/images/products.png)
+
+### Inventory Log
+
+![Inventory Log](./docs/images/inventory-log.png)
+
+---
+
+## 🐳 Docker Image
+
+Pull the latest backend image:
+
+```bash
+docker pull 63982355/inventory-order-api
 ```
 
-## Step 6: Deploy PostgreSQL on Neon
+---
 
-1. Create a free Neon project at `https://neon.com`.
-2. Copy its pooled PostgreSQL connection string.
-3. Change the scheme from `postgresql://` to `postgresql+psycopg://`.
-4. Keep this value private. You will add it to Render as `DATABASE_URL`.
+## 🚀 Deployment
 
-Example format:
+### Frontend
 
-```text
-postgresql+psycopg://USER:PASSWORD@HOST/DATABASE?sslmode=require
-```
+Hosted on Vercel
 
-## Step 7: Deploy the FastAPI Backend on Render
+### Backend
 
-1. Push the repository to GitHub.
-2. In Render, select **New > Blueprint** and connect the repository.
-3. Render reads `render.yaml`.
-4. Add `DATABASE_URL` using your Neon connection string.
-5. Add `BACKEND_CORS_ORIGINS` after deploying the frontend, for example `https://your-app.vercel.app`.
-6. Confirm that `https://YOUR_RENDER_SERVICE.onrender.com/health` returns `{"status":"ok"}`.
-7. Confirm API documentation at `https://YOUR_RENDER_SERVICE.onrender.com/docs`.
+Hosted on Render
 
-Render runs `alembic upgrade head` automatically when the backend container starts.
+### Database
 
-## Step 8: Deploy the React Frontend on Vercel
+Hosted on Neon PostgreSQL
 
-1. In Vercel, import the same GitHub repository.
-2. Set **Root Directory** to `frontend`.
-3. Use framework preset **Vite**.
-4. Add `VITE_API_BASE_URL=https://YOUR_RENDER_SERVICE.onrender.com/api/v1`.
-5. Deploy and copy your Vercel URL.
-6. Return to Render and set `BACKEND_CORS_ORIGINS` to the Vercel URL.
+---
 
-## Step 9: Publish the Backend Docker Image
+## 👨‍💻 Author
 
-The GitHub workflow publishes to GitHub Container Registry when you create a version tag:
+### Abhay Rastogi
 
-```powershell
-git tag v1.0.0
-git push origin v1.0.0
-```
+GitHub:
+https://github.com/AbhayRastogi11
 
-After the workflow succeeds, make the package public in GitHub package settings. Your image path will look like:
-
-```text
-ghcr.io/YOUR_USERNAME/inventory-order-management-backend:v1.0.0
-```
-
-## Submission Checklist
-
-Replace placeholders and submit:
-
-```text
-GitHub repository: https://github.com/YOUR_USERNAME/inventory-order-management
-Frontend URL:      https://YOUR_APP.vercel.app
-Backend API:       https://YOUR_SERVICE.onrender.com
-API documentation:https://YOUR_SERVICE.onrender.com/docs
-Docker image:      ghcr.io/YOUR_USERNAME/inventory-order-management-backend:v1.0.0
-```
-
-Add screenshots of the dashboard, product list, create-order form, and FastAPI docs to your final submission. Mention that free Render web services may sleep after inactivity, so the first API request can take longer.
